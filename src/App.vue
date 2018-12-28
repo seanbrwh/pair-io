@@ -1,8 +1,11 @@
 <template>
   <div id="app">
     <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
+      <router-link to="/">Pair.io</router-link> 
+      <router-link to="/pair">Pair</router-link> 
+      <router-link to="/forum">Forums</router-link> 
+      <router-link to="/about">About</router-link> 
+      <router-link to="/contact">Contact</router-link> 
     </div>
     <router-view/>
   </div>
@@ -17,11 +20,14 @@
   color: #2c3e50;
 }
 #nav {
-  padding: 30px;
+  display: flex;
+  justify-content: space-evenly;
+  align-content: center;
   a {
     font-weight: bold;
     color: #2c3e50;
-    &.router-link-exact-active {
+    text-decoration: none;
+    &:hover{
       color: #42b983;
     }
   }
