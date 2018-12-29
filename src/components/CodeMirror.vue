@@ -1,27 +1,28 @@
 <template>
 	<div>
-    <select v-model="cmOptions.theme">
-      <option disabled value="">Please Select An Theme</option>
-      <option>cobalt</option>
-      <option>3024-night</option>    
-      <option>abcdef</option>    
-      <option>ambiance</option>    
-      <option>base16-dark</option>    
-      <option>bespin</option>    
-      <option>blackboard</option>    
-    </select>
-    <select v-model="cmOptions.mode">
-      <option disabled value="">Please Select An Theme</option>
-      <option>clojure</option>
-      <option>coffeescript</option>    
-      <option>javascript</option>     
-      <option>php</option>    
-      <option>ruby</option>    
-      <option>python</option>    
-      <option>sql</option>    
-      <option>vue</option>    
-    </select>
-    
+    <div class="options">
+      <label for="theme">Theme</label>
+      <select v-model="cmOptions.theme">
+        <option value="cobalt">cobalt</option>      
+        <option>3024-night</option>    
+        <option>abcdef</option>    
+        <option>ambiance</option>    
+        <option>base16-dark</option>    
+        <option>bespin</option>    
+        <option>blackboard</option>    
+      </select>
+      <label for="anguage">Language</label>
+      <select v-model="cmOptions.mode">
+        <option value="javascript">javascript</option>
+        <option>clojure</option>
+        <option>coffeescript</option>            
+        <option>php</option>    
+        <option>ruby</option>    
+        <option>python</option>    
+        <option>sql</option>    
+        <option>vue</option>    
+      </select>
+    </div>
 		<codemirror ref="myCm"
       v-model="code"       
 			:options="cmOptions"				
@@ -53,7 +54,7 @@
   export default {
     data(){
       return{                        
-        code:'//Start Typing here',                
+        code:"var welcome = 'Welcome to Pair.io'",                
         cmOptions:{
           theme:'cobalt',
           tabSize:2,
@@ -91,5 +92,17 @@
 .CodeMirror{
     text-align: left;
     margin-bottom: 20px;
+}
+.options{
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  flex-direction: column;
+}
+.options label{
+  margin: 5px;
+}
+.options select{
+  margin: 5px;
 }
 </style>
