@@ -1,82 +1,95 @@
 <template>
-<div>
-  <codemirror v-model="code" :options="cmOptions"></codemirror>
-  <div class="card mt-3">
-      <div class="card-body">
-          <div class="card-title">
-              <h3>Chat Group</h3>
-              <hr>
-          </div>
-          <div class="card-body">
-              <div class="messages" v-for="(msg, index) in messages" :key="index">
-                  <p><span class="font-weight-bold">{{ msg.user }}: </span>{{ msg.message }}</p>
-              </div>
-          </div>
-      </div>
-      <div class="card-footer">
-          <form @submit.prevent="sendMessage">
-              <div class="gorm-group">
-                  <label for="user">User:</label>
-                  <input type="text" v-model="user" class="form-control">
-              </div>
-              <div class="gorm-group pb-3">
-                  <label for="message">Message:</label>
-                  <input type="text" v-model="message" class="form-control">
-              </div>
-              <button type="submit" class="btn btn-success">Send</button>
-          </form>
-      </div>
-  </div>
-</div>
+	<div>
+    <select v-model="cmOptions.theme">
+      <option disabled value="">Please Select An Theme</option>
+      <option>cobalt</option>
+      <option>3024-night</option>    
+      <option>abcdef</option>    
+      <option>ambiance</option>    
+      <option>base16-dark</option>    
+      <option>bespin</option>    
+      <option>blackboard</option>    
+    </select>
+    <select v-model="cmOptions.mode">
+      <option disabled value="">Please Select An Theme</option>
+      <option>clojure</option>
+      <option>coffeescript</option>    
+      <option>javascript</option>     
+      <option>php</option>    
+      <option>ruby</option>    
+      <option>python</option>    
+      <option>sql</option>    
+      <option>vue</option>    
+    </select>
+    
+		<codemirror ref="myCm"
+      v-model="code"       
+			:options="cmOptions"				
+			@input="sendMessage">
+		</codemirror>  		
+	</div>
 </template>
 
 <script>
+  import io from 'socket.io-client'
   import {codemirror} from 'vue-codemirror'
   import 'codemirror/lib/codemirror.css'
   import 'codemirror/mode/javascript/javascript.js'
-  import 'codemirror/theme/cobalt.css'
-  import io from 'socket.io-client'
+  import 'codemirror/mode/clojure/clojure.js'
+  import 'codemirror/mode/coffeescript/coffeescript.js'  
+  import 'codemirror/mode/php/php.js'
+  import 'codemirror/mode/ruby/ruby.js'
+  import 'codemirror/mode/python/python.js'
+  import 'codemirror/mode/sql/sql.js'
+  import 'codemirror/mode/vue/vue.js'
+  import 'codemirror/theme/cobalt.css'		
+  import 'codemirror/theme/3024-night.css'		
+  import 'codemirror/theme/abcdef.css'		
+  import 'codemirror/theme/ambiance.css'		
+  import 'codemirror/theme/base16-dark.css'		
+  import 'codemirror/theme/bespin.css'		
+  import 'codemirror/theme/blackboard.css'
+
   export default {
     data(){
-      return{
-        user: '',
-        message: '',
-        messages: [],
-        socket : io('localhost:3001'),
-        code:'//Start Typing here',
+      return{                        
+        code:'//Start Typing here',                
         cmOptions:{
           theme:'cobalt',
-          tabSize:4,
+          tabSize:2,
           mode:'text/javascript',
           line:true,
-          lineNumbers:true,                  
-        }    
+          lineNumbers:true,              
+          matchBrackets:true,
+          autoCloseTags: true,
+          extraKeys: {"Ctrl-Space": "autocomplete"}                     
+        },        
+        socket: io('localhost:3001')    
       }
     },
     methods:{
-      sendMessage(e) {
-        e.preventDefault();            
-        this.socket.emit('SEND_MESSAGE', {
-        user: this.user,
-        message: this.message
-        });
-        this.message = ''
-        }
+    sendMessage() {
+      this.socket.emit('SEND_MESSAGE', {      
+      message: this.code
+    });
+    return false
+    }         
     }, 
-    created() {
-        this.socket.on('MESSAGE', (data) => {
-            this.messages = [...this.messages, data];
-            // you can also do this.messages.push(data)
-        });
+    mounted() {      
+    this.socket.on('MESSAGE', (data) => {
+      let {message} = data
+      this.code = message
+    });
     },  
     components:{
-      codemirror
+        codemirror
     }
   }
 </script>
 
 <style lang="scss">
-  .CodeMirror{
-    text-align: left
-  }
+.CodeMirror{
+    text-align: left;
+    margin-bottom: 20px;
+}
 </style>

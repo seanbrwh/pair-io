@@ -1,17 +1,17 @@
-const express = require('express');
-const app = express();
+const express = require('express'),
+			app = express(),
+			bodyParser = require('body-parser'),
+			PORT = 3001,
+			server = app.listen(PORT, () => {
+				console.log(`server running on port ${PORT}`);
+			}),
+			io = require('socket.io')(server);			
+			
+app.use(bodyParser.json(), bodyParser.urlencoded({extended:true}))
 
-
-const server = app.listen(3001, function() {
-    console.log('server running on port 3001');
+io.on('connection', (socket)=>{
+	console.log(socket.id)
+	socket.on('SEND_MESSAGE', function(data) {		
+		io.emit('MESSAGE', data)
 });
-
-
-const io = require('socket.io')(server);
-
-io.on('connection', function(socket) {
-  console.log(socket.id)
-  socket.on('SEND_MESSAGE', function(data) {
-      io.emit('MESSAGE', data)
-  });
-});
+})

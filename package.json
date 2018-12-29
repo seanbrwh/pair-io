@@ -24,6 +24,6 @@
     "sass-loader": "^7.0.1",
     "vue-template-compiler": "^2.5.17"
   },
-  "main": "/server/index.js",
+  "main": "./server/index.js",
   "proxy": "http://localhost:3044"
 }
