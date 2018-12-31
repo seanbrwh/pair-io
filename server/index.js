@@ -5,7 +5,8 @@ const express = require('express'),
 			server = app.listen(PORT, () => {
 				console.log(`server running on port ${PORT}`);
 			}),
-			io = require('socket.io')(server);			
+			io = require('socket.io')(server)
+			cors = require('cors');			
 			
 app.use(bodyParser.json(), bodyParser.urlencoded({extended:true}))
 
