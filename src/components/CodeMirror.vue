@@ -70,16 +70,16 @@
     },
     methods:{
     sendMessage() {
-      this.socket.emit('SEND_MESSAGE', {      
-      message: this.code
+      this.socket.emit('SEND_CODE', {      
+      code: this.code
     });
-    return false
+      code = this.code
     }         
     }, 
     mounted() {      
-    this.socket.on('MESSAGE', (data) => {
-      let {message} = data
-      this.code = message
+    this.socket.on('CODE', (data) => {
+      let {code} = data
+      this.code = code
     });
     },  
     components:{

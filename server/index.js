@@ -11,8 +11,7 @@ const express = require('express'),
 app.use(bodyParser.json(), bodyParser.urlencoded({extended:true}))
 
 io.on('connection', (socket)=>{
-	console.log(socket.id)
-	socket.on('SEND_MESSAGE', function(data) {		
-		io.emit('MESSAGE', data)
+	socket.on('SEND_CODE', function(data) {		
+		io.emit('CODE', data)
 });
 })
