@@ -50,7 +50,6 @@
   import 'codemirror/theme/base16-dark.css'		
   import 'codemirror/theme/bespin.css'		
   import 'codemirror/theme/blackboard.css'
-
   export default {
     data(){
       return{                        
@@ -64,8 +63,8 @@
           matchBrackets:true,
           autoCloseTags: true,
           extraKeys: {"Ctrl-Space": "autocomplete"}                     
-        },        
-        socket: io('localhost:3001')    
+        },
+        socket: io.connect(`http://localhost:3001/pair`)    
       }
     },
     methods:{
@@ -73,13 +72,14 @@
       this.socket.emit('SEND_CODE', {      
       code: this.code
     });
-      code = this.code
+      return ''
     }         
     }, 
-    mounted() {      
+    mounted() {   
+    this.socket.emit('joinRoom', 'Room1'),   
     this.socket.on('CODE', (data) => {
-      let {code} = data
-      this.code = code
+      console.log(this.code)           
+      this.code = data
     });
     },  
     components:{
